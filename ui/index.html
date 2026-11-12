@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hysh</title>
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <!-- ambient light: the current cover in a 32 px canvas, stretched behind the whole window -->
+  <canvas id="ambient" width="32" height="32" aria-hidden="true"></canvas>
+
+  <header id="titlebar" data-tauri-drag-region>
+    <div class="tb-left" data-tauri-drag-region>
+      <button class="icon-btn" id="nav-toggle" title="Collapse sidebar (Ctrl+B)" aria-label="Toggle sidebar" aria-expanded="true"></button>
+      <div class="brand" data-tauri-drag-region><svg viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="3" width="3" height="12" rx="1.5" fill="currentColor"/><rect x="7.5" y="6" width="3" height="6" rx="1.5" fill="currentColor" opacity=".7"/><rect x="14" y="7.75" width="3" height="2.5" rx="1.25" class="hot"/></svg><span>hysh</span></div>
+      <button class="icon-btn" id="nav-back" title="Back (Alt+Left)"></button>
+      <button class="icon-btn" id="nav-fwd" title="Forward (Alt+Right)"></button>
+    </div>
+    <div class="tb-search">
+      <span class="tb-search-icon"></span>
+      <input id="global-search" type="search" placeholder="Search music, or paste a link" autocomplete="off" spellcheck="false">
+      <kbd class="tb-kbd" id="open-palette" title="Command palette">Ctrl K</kbd>
+    </div>
+    <div class="tb-right" data-tauri-drag-region>
+      <button class="win-btn" id="win-min" title="Minimize"></button>
+      <button class="win-btn" id="win-max" title="Maximize"></button>
+      <button class="win-btn close" id="win-close" title="Close"></button>
+    </div>
+  </header>
+
+  <div id="shell">
+    <nav id="sidebar">
+      <div class="nav-group" id="nav-main"></div>
+      <div class="nav-title">Your playlists <button class="icon-btn small" id="new-playlist" title="New playlist"></button></div>
+      <div class="nav-group scroll" id="nav-playlists"></div>
+    </nav>
+
+    <main id="main" tabindex="-1"></main>
+
+    <aside id="sidepanel" class="hidden">
+      <div class="sp-tabs">
+        <button data-tab="queue" class="active">Up next</button>
+        <button data-tab="lyrics">Lyrics</button>
+        <button class="icon-btn small" id="sp-close" title="Close"></button>
+      </div>
+      <div class="sp-body" id="sp-body"></div>
+    </aside>
+  </div>
+
+  <footer id="playerbar" class="dock">
+    <div class="pb-now">
+      <div class="pb-cover-wrap" id="pb-open" title="Open Now Playing (F)"><img id="pb-cover" alt=""></div>
+      <div class="pb-meta">
+        <div class="pb-title" id="pb-title">Nothing playing</div>
+        <div class="pb-artist" id="pb-artist">Pick something to listen to</div>
+      </div>
+      <button class="icon-btn" id="pb-like" title="Like"></button>
+    </div>
+    <div class="pb-center">
+      <div class="pb-controls">
+        <button class="icon-btn" id="pb-shuffle" title="Shuffle (S)"></button>
+        <button class="icon-btn" id="pb-prev" title="Previous (Ctrl+Left)"></button>
+        <button class="play-btn" id="pb-play" title="Play / Pause (Space)"></button>
+        <button class="icon-btn" id="pb-next" title="Next (Ctrl+Right)"></button>
+        <button class="icon-btn" id="pb-repeat" title="Repeat (R)"></button>
+      </div>
+      <div class="pb-progress">
+        <span class="time" id="pb-pos">0:00</span>
+        <div class="slider" id="pb-seek"><div class="fill"></div><div class="buffer"></div><div class="knob"></div></div>
+        <span class="time" id="pb-dur">0:00</span>
+      </div>
+    </div>
+    <div class="pb-right">
+      <span class="badge" id="pb-badge"></span>
+      <button class="icon-btn" id="pb-lyrics" title="Lyrics (L)"></button>
+      <button class="icon-btn" id="pb-queue" title="Queue (Q)"></button>
+      <button class="icon-btn" id="pb-mute" title="Mute (M)"></button>
+      <div class="slider vol" id="pb-vol"><div class="fill"></div><div class="knob"></div></div>
+      <button class="icon-btn" id="pb-widget" title="Widget (W)"></button>
+    </div>
+  </footer>
+
+  <section id="nowplaying" class="hidden" aria-label="Now playing">
+    <div class="np-bg"><canvas id="np-bg" width="32" height="32"></canvas><div class="np-bg-shade"></div></div>
+    <div class="np-top" data-tauri-drag-region>
+      <button class="icon-btn" id="np-close" title="Close (Esc)"></button>
+      <div class="np-source" id="np-source" data-tauri-drag-region></div>
+      <button class="icon-btn" id="np-dl" title="Download this song"></button>
+      <button class="icon-btn" id="np-more" title="More"></button>
+      <div class="np-tabs">
+        <button data-np="lyrics" class="active">Lyrics</button>
+        <button data-np="queue">Up next</button>
+        <button data-np="about">About</button>
+      </div>
+    </div>
+    <div class="np-content">
+      <div class="np-left">
+        <div class="np-cover-wrap"><img id="np-cover" alt=""><canvas id="np-viz"></canvas></div>
+        <div class="np-meta">
+          <div class="np-title" id="np-title"></div>
+          <div class="np-artist" id="np-artist"></div>
+        </div>
+        <div class="np-progress">
+          <div class="slider big" id="np-seek"><div class="fill"></div><div class="buffer"></div><div class="knob"></div></div>
+          <div class="np-times"><span id="np-pos">0:00</span><span id="np-dur">0:00</span></div>
+        </div>
+        <div class="np-controls">
+          <button class="icon-btn" id="np-shuffle"></button>
+          <button class="icon-btn lg" id="np-prev"></button>
+          <button class="play-btn xl" id="np-play"></button>
+          <button class="icon-btn lg" id="np-next"></button>
+          <button class="icon-btn" id="np-repeat"></button>
+        </div>
+      </div>
+      <div class="np-right" id="np-right"></div>
+    </div>
+  </section>
+
+  <div id="palette" class="hidden" role="dialog" aria-label="Command palette">
+    <div class="pal-card">
+      <div class="pal-search"><span class="pal-icon"></span><input id="pal-input" placeholder="Songs, artists, playlists, actions…" autocomplete="off" spellcheck="false"></div>
+      <div class="pal-list" id="pal-list" role="listbox"></div>
+      <div class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+    </div>
+  </div>
+
+  <div id="menu" class="hidden" role="menu"></div>
+  <div id="modal" class="hidden"><div class="modal-card" id="modal-card"></div></div>
+  <div id="toasts"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

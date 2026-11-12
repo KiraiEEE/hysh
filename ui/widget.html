@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hysh widget</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/widget.css">
+</head>
+<body class="widget">
+  <div class="w-card" id="card" data-tauri-drag-region>
+    <canvas id="w-glow" width="32" height="32" aria-hidden="true"></canvas>
+    <img id="w-cover" alt="" data-tauri-drag-region>
+    <div class="w-meta" data-tauri-drag-region>
+      <div class="w-title" id="w-title" data-tauri-drag-region>Hysh</div>
+      <div class="w-artist" id="w-artist" data-tauri-drag-region></div>
+      <div class="w-lyric" id="w-lyric" data-tauri-drag-region></div>
+    </div>
+    <div class="w-ctl">
+      <button class="icon-btn" id="w-like" aria-label="Like"></button>
+      <button class="icon-btn" id="w-prev" aria-label="Previous"></button>
+      <button class="play-btn" id="w-play" aria-label="Play or pause"></button>
+      <button class="icon-btn" id="w-next" aria-label="Next"></button>
+      <button class="icon-btn" id="w-menu" aria-label="Widget options"></button>
+    </div>
+    <div class="w-progress"><div class="fill" id="w-fill"></div></div>
+  </div>
+  <div id="menu" class="hidden" role="menu"></div>
+  <div id="toasts"></div>
+  <script type="module" src="js/widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Hysh",
+  "version": "0.1.0",
+  "identifier": "app.hysh.player",
+  "build": {
+    "frontendDist": "../ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico"
+    ],
+    "shortDescription": "Lightweight all-in-one music player",
+    "copyright": "Copyright (C) 2026 KiraiEEE. GPL-3.0-or-later.",
+    "publisher": "KiraiEEE",
+    "homepage": "https://kiraieee.github.io/"
+  }
+}

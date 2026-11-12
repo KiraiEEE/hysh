@@ -1,0 +1,46 @@
+/* Hysh widget - GPL-3.0-or-later. Uses the app's tokens and themes; only layout lives here.
+   The window is transparent; the card leaves an 8 px margin for its own soft shadow. */
+html, body.widget { background: transparent; overflow: hidden; }
+body.widget { padding: 8px; }
+
+.w-card {
+  position: relative; height: calc(100vh - 16px); overflow: hidden;
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: 1fr auto; column-gap: 12px;
+  padding: 10px 12px 12px 10px; border-radius: calc(var(--r-panel) + 4px);
+  background: var(--bg-raised); box-shadow: 0 6px 18px rgba(0, 0, 0, .45);
+  animation: wIn calc(var(--d3) * 2) var(--ease-pop) both;
+}
+@keyframes wIn { from { opacity: 0; transform: translateY(14px) scale(.96); } }
+body.leaving .w-card { animation: wOut var(--d2) var(--ease-in) both; }
+@keyframes wOut { to { opacity: 0; transform: translateY(10px) scale(.97); } }
+
+/* cover-coloured glow, the same 32 px canvas trick as the main window */
+#w-glow { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity calc(var(--d3) * 2) var(--ease-std); pointer-events: none; }
+#w-glow.ready { opacity: .38; }
+.w-card > :not(#w-glow) { position: relative; }
+
+#w-cover { grid-row: 1 / 3; width: 76px; height: 76px; align-self: center; border-radius: var(--r-art); object-fit: cover; background: var(--bg-active); box-shadow: 0 6px 16px rgba(0, 0, 0, .4); }
+#w-cover.fade-in { animation: imgIn var(--d3) var(--ease-std) both; }
+.w-meta { min-width: 0; align-self: center; }
+.w-title { font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.w-artist { color: var(--text-2); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.w-lyric { color: var(--a); font-size: 12.5px; font-weight: 600; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 1.4em; transition: opacity var(--d2) var(--ease-std), transform var(--d2) var(--ease-out); }
+.w-lyric.swap { opacity: 0; transform: translateY(4px); }
+.w-lyric:empty, body.no-lyrics .w-lyric { display: none; }
+
+.w-ctl { display: flex; align-items: center; gap: 2px; }
+.w-ctl .play-btn { width: 34px; height: 34px; margin: 0 2px; }
+.w-ctl .icon-btn { width: 30px; height: 30px; }
+#w-menu { margin-left: auto; }
+
+.w-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(var(--fg-rgb), .08); }
+.w-progress .fill { height: 100%; width: 100%; background: var(--a); transform-origin: left center; transform: scaleX(0); }
+
+/* compact: one row; controls replace the text while the pointer is over the widget */
+body.compact #w-cover { width: 52px; height: 52px; grid-row: 1 / 2; }
+body.compact .w-card { grid-template-rows: 1fr; padding: 8px 10px 10px 8px; }
+body.compact .w-lyric { display: none; }
+body.compact .w-ctl { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); opacity: 0; pointer-events: none; padding-left: 24px; background: linear-gradient(90deg, transparent, var(--bg-raised) 24px); transition: opacity var(--d2) var(--ease-std); }
+body.compact .w-card:hover .w-ctl, body.compact .w-card:focus-within .w-ctl { opacity: 1; pointer-events: auto; }
+
+#menu { min-width: 200px; }

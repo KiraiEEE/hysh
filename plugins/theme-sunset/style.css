@@ -1,0 +1,8 @@
+/* Sunset - example Hysh theme plugin. A theme only sets the design tokens. */
+:root[data-theme="sunset"] {
+  --bg: #16121f; --bg-rgb: 22, 18, 31;
+  --bg-raised: #1d1828; --bg-hover: #251e33; --bg-active: #2f2640;
+  --fg-rgb: 246, 233, 224;
+  --signal: 255, 138, 76; --on-accent: #16121f;
+  --r: 8px; --r-lg: 12px; --r-art: 10px;
+}

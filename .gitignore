@@ -1,0 +1,11 @@
+# Rust / Tauri build output
+/src-tauri/target/
+/src-tauri/gen/
+# Node (only used to run the Tauri CLI for installers)
+node_modules/
+# Editors and OS
+.vscode/
+.idea/
+*.log
+Thumbs.db
+desktop.ini

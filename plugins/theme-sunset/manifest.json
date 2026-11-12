@@ -1,0 +1,10 @@
+{
+  "name": "Sunset theme",
+  "version": "1.0.0",
+  "author": "Hysh",
+  "description": "A warm dusk palette. Example theme plugin.",
+  "style": "style.css",
+  "themes": [
+    { "id": "sunset", "name": "Sunset", "note": "Dusk orange on indigo", "bg": "#16121f", "fg": "#f6e9e0", "ac": "#ff8a4c" }
+  ]
+}

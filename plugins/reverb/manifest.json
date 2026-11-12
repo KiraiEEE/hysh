@@ -1,0 +1,7 @@
+{
+  "name": "Room Reverb",
+  "version": "1.0.0",
+  "author": "Hysh",
+  "description": "Adds a soft room reverb to everything you play. Example audio-effect plugin.",
+  "main": "main.js"
+}
